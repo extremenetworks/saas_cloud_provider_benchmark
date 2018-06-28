@@ -10,6 +10,9 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
 # Install some dev tools
 RUN apt install -y vim git
 
+# Mount src to container
 RUN mkdir /saas
 
-ADD ./templates/ /saas/templates/
+# Save gcloud credentials on host box to avoid renegotiating OAuth2 tokens every time
+RUN mkdir -p /root/.config/gcloud
+VOLUME ["/root/.config/gcloud/", "/saas"]
